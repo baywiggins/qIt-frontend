@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:qit/pages/animated_background.dart';
+import 'package:qit/animations/animated_background.dart';
+import 'package:qit/animations/animated_homebutton.dart';
+import 'package:qit/pages/create_room_page.dart';
+import 'package:qit/pages/join_room_page.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -10,53 +13,40 @@ class HomePage extends StatelessWidget {
       body: Stack(
         children: [
           BackgroundAnimation(),
-          Center(
-            child: FractionallySizedBox(
-              heightFactor: 0.8,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  HomeButton(
-                    child: Text(
-                      "CREATE ROOM",
-                      style: TextStyle(fontSize: 20),
-                    ),
-                  ),
-                  HomeButton(
-                    child: Text(
-                      "JOIN ROOM",
-                      style: TextStyle(fontSize: 20),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
+          HomeButtons(),
         ],
       ),
     );
   }
 }
 
-class HomeButton extends StatelessWidget {
-  final Widget child;
-
-  const HomeButton({super.key, required this.child});
+class HomeButtons extends StatefulWidget {
+  const HomeButtons({super.key});
 
   @override
+  State<HomeButtons> createState() => _HomeButtonsState();
+}
+
+class _HomeButtonsState extends State<HomeButtons> {
+  @override
   Widget build(BuildContext context) {
-    return OutlinedButton(
-      onPressed: () {},
-      style: OutlinedButton.styleFrom(
-        backgroundColor: Colors.white.withOpacity(0.5),
-        shape: const CircleBorder(),
-        padding: const EdgeInsets.all(120),
-        // side: const BorderSide(
-        //   color: Colors.black,
-        //   width: 5.0,
-        // ),
+    return const Center(
+      child: FractionallySizedBox(
+        heightFactor: 0.8,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            AnimatedHomeButton(
+              buttonText: "CREATE ROOM",
+              nextPage: CreateRoomPage(),
+            ),
+            AnimatedHomeButton(
+              buttonText: "JOIN ROOM",
+              nextPage: JoinRoomPage(),
+            ),
+          ],
+        ),
       ),
-      child: child,
     );
   }
 }

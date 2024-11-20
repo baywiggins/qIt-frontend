@@ -14,9 +14,9 @@ class _BackgroundAnimationState extends State<BackgroundAnimation>
   late Animation<Color?> _colorTwoAnimation;
   late Animation<Color?> _colorThreeAnimation;
 
-  final _colorOne = Color.fromARGB(255, 124, 159, 255);
-  final _colorTwo = Color.fromARGB(255, 85, 131, 255);
-  final _colorThree = Color.fromRGBO(14, 103, 255, 1);
+  final _colorOne = const Color.fromARGB(255, 124, 159, 255);
+  final _colorTwo = const Color.fromARGB(255, 85, 201, 255);
+  final _colorThree = const Color.fromRGBO(14, 103, 255, 1);
 
   @override
   void initState() {
