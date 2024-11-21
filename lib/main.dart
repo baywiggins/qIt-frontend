@@ -4,9 +4,7 @@ import 'package:qit/pages/home_page.dart';
 import 'package:qit/services/secure_storage.dart';
 
 Future main() async {
-  await dotenv.load(fileName: "assets/.env", mergeWith: {
-    "TEST_VAR": "5",
-  });
+  await dotenv.load(fileName: "assets/.env");
   SecureStorage.initialize();
   SecureStorage.saveNewItem("is_authorized", "false");
 

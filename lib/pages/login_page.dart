@@ -4,6 +4,7 @@ import 'package:qit/components/login_button.dart';
 import 'package:qit/components/login_field.dart';
 import 'package:qit/components/swap_states_button.dart';
 import 'package:qit/pages/create_room_page.dart';
+import 'package:qit/pages/spotify_auth_page.dart';
 import 'package:qit/services/api.dart';
 import 'package:qit/services/secure_storage.dart';
 
@@ -43,14 +44,18 @@ class _LoginPageState extends State<LoginPage> {
     }
   }
 
-  void handleCreateAccount() {
+  void handleCreateAccount(BuildContext context) async {
     String? username = _usernameController.text;
     String? password = _passwordController.text;
     String? confirm = _confirmController.text;
 
     // Handle password and confirm !=
 
-    Api.postCreateAccount(username, password);
+    bool x = await Api.postCreateAccount(username, password);
+
+    if (x) {
+      Navigator.push(context, HomePageRoute(child: SpotifyAuthPage()));
+    }
   }
 
   @override
@@ -85,14 +90,14 @@ class _LoginPageState extends State<LoginPage> {
                   size: deviceHeight * 0.2,
                 ),
                 SizedBox(
-                  height: deviceHeight * 0.01,
+                  height: deviceHeight * 0.008,
                 ),
                 const Text(
                   "Sign in or Create Account",
                   style: TextStyle(fontSize: 20),
                 ),
                 SizedBox(
-                  height: deviceHeight * 0.01,
+                  height: deviceHeight * 0.008,
                 ),
                 LoginField(
                   hintText: "Username",
@@ -101,7 +106,7 @@ class _LoginPageState extends State<LoginPage> {
                   nextNode: _passwordFocusNode,
                 ),
                 SizedBox(
-                  height: deviceHeight * 0.01,
+                  height: deviceHeight * 0.008,
                 ),
                 LoginField(
                   hintText: "Password",
@@ -116,7 +121,7 @@ class _LoginPageState extends State<LoginPage> {
                     children: [
                       if (!signIn) ...[
                         SizedBox(
-                          height: deviceHeight * 0.01,
+                          height: deviceHeight * 0.008,
                         ),
                         LoginField(
                           hintText: "Confirm Password",
@@ -125,7 +130,7 @@ class _LoginPageState extends State<LoginPage> {
                           nextNode: null,
                         ),
                         SizedBox(
-                          height: deviceHeight * 0.01,
+                          height: deviceHeight * 0.008,
                         ),
                       ],
                     ],
@@ -136,21 +141,22 @@ class _LoginPageState extends State<LoginPage> {
                   children: [
                     Padding(
                       padding:
-                          EdgeInsets.only(right: deviceWidth * 0.1, top: 5),
+                          EdgeInsets.only(right: deviceWidth * 0.08, top: 5),
                       child: const Text("Forgot password?"),
                     ),
                   ],
                 ),
                 SizedBox(
-                  height: deviceHeight * 0.05,
+                  height: deviceHeight * 0.03,
                 ),
                 SubmitButton(
-                  onTap: () =>
-                      signIn ? handleSignIn(context) : handleCreateAccount(),
+                  onTap: () => signIn
+                      ? handleSignIn(context)
+                      : handleCreateAccount(context),
                   buttonText: signIn ? "Sign In" : "Create Account",
                 ),
                 SizedBox(
-                  height: deviceHeight * 0.05,
+                  height: deviceHeight * 0.03,
                 ),
                 const Row(
                   mainAxisAlignment: MainAxisAlignment.center,

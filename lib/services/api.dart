@@ -10,14 +10,16 @@ class Api {
 
   static Future<bool> checkAndUpdateAuthStatus() async {
     String? token = await SecureStorage.getItem("jwt_token");
+    String? user = await SecureStorage.getItem("user_id");
     // ignore: unrelated_type_equality_checks
-    if (token == null) {
+    if (token == null || user == null) {
       SecureStorage.saveNewItem("is_authorized", "false");
       return false;
     }
 
     var headers = {
       'Authorization': token,
+      'uuid': user,
     };
 
     final resp = await http.get(Uri.parse("$baseURL/account/test-auth"),
@@ -78,8 +80,9 @@ class Api {
       // Parse the JSON response body
       Map<String, dynamic> data = jsonDecode(resp.body);
 
-      // // Save the token and state in secure storage
+      // // Save the token and uuid in secure storage
       await SecureStorage.saveNewItem("jwt_token", data["token"]);
+      await SecureStorage.saveNewItem("user_id", data["uuid"]);
 
       // // Call the function to check and update authentication status
       checkAndUpdateAuthStatus();
@@ -125,9 +128,10 @@ class Api {
       // Parse the JSON response body
       Map<String, dynamic> data = jsonDecode(resp.body);
 
-      // // Save the token and state in secure storage
+      // // Save the token, state, and uuid in secure storage
       await SecureStorage.saveNewItem("jwt_token", data["token"]);
       await SecureStorage.saveNewItem("state", state);
+      await SecureStorage.saveNewItem("user_id", data["uuid"]);
 
       // // Call the function to check and update authentication status
       checkAndUpdateAuthStatus();
