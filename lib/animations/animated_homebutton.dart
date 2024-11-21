@@ -68,10 +68,11 @@ class _AnimatedHomeButtonState extends State<AnimatedHomeButton>
         scale: _scale,
         duration: const Duration(milliseconds: 300),
         child: Container(
-          padding: EdgeInsets.all(120), // Reduce padding to allow more space
+          padding:
+              const EdgeInsets.all(120), // Reduce padding to allow more space
           decoration: BoxDecoration(
             shape: BoxShape.circle,
-            color: Color.fromRGBO(255, 255, 255, _buttonOpacity),
+            color: Color.fromRGBO(248, 248, 248, _buttonOpacity),
             border: Border.all(
               color: Color.fromRGBO(24, 0, 0, _outlineOpacity),
               width: 2.0,

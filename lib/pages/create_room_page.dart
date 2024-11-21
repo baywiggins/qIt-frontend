@@ -1,7 +1,6 @@
-import 'dart:ffi';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:qit/components/spotify_auth_button.dart';
 import 'package:qit/services/api.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -18,64 +17,9 @@ class CreateRoomPage extends StatelessWidget {
             fontWeight: FontWeight.bold,
           ),
         ),
-        backgroundColor: Colors.white,
+        backgroundColor: const Color.fromARGB(255, 248, 248, 248),
       ),
       body: const SpotifyAuth(),
-    );
-  }
-}
-
-class SpotifyAuthButton extends StatelessWidget {
-  final Function onPressed;
-  final String? url;
-  final double fontSize;
-  final bool error;
-
-  const SpotifyAuthButton(
-      {super.key,
-      required this.onPressed,
-      required this.url,
-      required this.fontSize,
-      required this.error});
-
-  @override
-  Widget build(BuildContext context) {
-    return ElevatedButton(
-      onPressed: () {
-        if (error) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              backgroundColor: Colors.red,
-              content: Center(
-                child: Text(
-                  "Error fetching URL, try again later",
-                  style: TextStyle(
-                    fontSize: fontSize,
-                  ),
-                ),
-              ),
-            ),
-          );
-        }
-        onPressed(url); // Use the fetched URL
-      },
-      style: const ButtonStyle(
-        shadowColor: WidgetStatePropertyAll(Colors.white),
-        backgroundColor: WidgetStatePropertyAll(
-          Color.fromARGB(255, 29, 185, 84),
-        ),
-        foregroundColor: WidgetStatePropertyAll(Colors.white),
-      ),
-      child: Padding(
-        padding: const EdgeInsets.only(
-          top: 15.0,
-          bottom: 15.0,
-        ),
-        child: Text(
-          "Log In",
-          style: TextStyle(fontSize: fontSize),
-        ),
-      ),
     );
   }
 }
@@ -108,7 +52,7 @@ class _SpotifyAuthState extends State<SpotifyAuth>
   @override
   void initState() {
     super.initState();
-    _futureURL = Api().getAuthURL();
+    _futureURL = Api.getAuthURL();
 
     _controller = AnimationController(
       duration: const Duration(milliseconds: 300),
@@ -143,7 +87,7 @@ class _SpotifyAuthState extends State<SpotifyAuth>
       child: SlideTransition(
         position: _offsetAnimation,
         child: Container(
-          color: Colors.white,
+          color: const Color.fromARGB(255, 248, 248, 248),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
