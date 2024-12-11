@@ -8,9 +8,6 @@ Future main() async {
   SecureStorage.initialize();
   SecureStorage.saveNewItem("is_authorized", "false");
 
-  var x = await SecureStorage.getItem("state");
-  print(x);
-
   runApp(const MyApp());
 }
 

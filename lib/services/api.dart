@@ -22,9 +22,18 @@ class Api {
       'uuid': user,
     };
 
-    final resp = await http.get(Uri.parse("$baseURL/account/test-auth"),
-        headers: headers);
-    bool status = resp.statusCode == 200;
+    final accountAuthResp = await http.get(
+      Uri.parse("$baseURL/account/test-auth"),
+      headers: headers,
+    );
+
+    final spotifyAuthResp = await http.get(
+      Uri.parse("$baseURL/spotify/auth/test-spotify-auth"),
+      headers: headers,
+    );
+
+    bool status = (accountAuthResp.statusCode == 200) &&
+        (spotifyAuthResp.statusCode == 200);
 
     if (!status) {
       SecureStorage.saveNewItem("is_authorized", "false");
@@ -32,22 +41,48 @@ class Api {
       SecureStorage.saveNewItem("is_authorized", "true");
     }
 
-    return status;
+    return status && await getSpotifyAuthStatus();
   }
 
   static Future<String> getAuthURL() async {
     String? token = await SecureStorage.getItem("jwt_token");
     String? state = await SecureStorage.getItem("state");
-    if (token == null || state == null) {
+    String? user = await SecureStorage.getItem("user_id");
+    if (token == null || state == null || user == null) {
       return "";
     }
     final resp = await http
         .get(Uri.parse("$baseURL/spotify/auth?state=$state"), headers: {
       "Authorization": token,
+      "uuid": user,
     });
     Map<String, dynamic> data = jsonDecode(resp.body);
 
     return data["auth_url"];
+  }
+
+  static Future<bool> getSpotifyAuthStatus() async {
+    String? token = await SecureStorage.getItem("jwt_token");
+    String? state = await SecureStorage.getItem("state");
+    String? user = await SecureStorage.getItem("user_id");
+
+    if (token == null || state == null || user == null) {
+      return false;
+    }
+
+    final resp = await http.get(
+      Uri.parse("$baseURL/spotify/auth/test-spotify-auth"),
+      headers: {
+        "Authorization": token,
+        "uuid": user,
+      },
+    );
+
+    if (resp.statusCode != 200) {
+      return false;
+    }
+
+    return true;
   }
 
   static Future<bool> postSignIn(String username, String password) async {
@@ -128,13 +163,10 @@ class Api {
       // Parse the JSON response body
       Map<String, dynamic> data = jsonDecode(resp.body);
 
-      // // Save the token, state, and uuid in secure storage
+      // Save the token, state, and uuid in secure storage
       await SecureStorage.saveNewItem("jwt_token", data["token"]);
       await SecureStorage.saveNewItem("state", state);
       await SecureStorage.saveNewItem("user_id", data["uuid"]);
-
-      // // Call the function to check and update authentication status
-      checkAndUpdateAuthStatus();
 
       return true;
     } catch (e) {
@@ -142,5 +174,45 @@ class Api {
       print("Error during account creation: $e");
       return false;
     }
+  }
+
+  static Future<void> pauseSpotify() async {
+    String? token = await SecureStorage.getItem("jwt_token");
+    String? state = await SecureStorage.getItem("state");
+    String? user = await SecureStorage.getItem("user_id");
+
+    if (token == null || state == null || user == null) {
+      return;
+    }
+
+    var headers = {
+      'Authorization': token,
+      'uuid': user,
+    };
+
+    await http.get(
+      Uri.parse("$baseURL/spotify/pause"),
+      headers: headers,
+    );
+  }
+
+  static Future<void> playSpotify() async {
+    String? token = await SecureStorage.getItem("jwt_token");
+    String? state = await SecureStorage.getItem("state");
+    String? user = await SecureStorage.getItem("user_id");
+
+    if (token == null || state == null || user == null) {
+      return;
+    }
+
+    var headers = {
+      'Authorization': token,
+      'uuid': user,
+    };
+
+    await http.get(
+      Uri.parse("$baseURL/spotify/play"),
+      headers: headers,
+    );
   }
 }

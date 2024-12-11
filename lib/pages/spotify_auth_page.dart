@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:qit/animations/animated_fade_route.dart';
 import 'package:qit/components/spotify_auth_button.dart';
+import 'package:qit/pages/home_page.dart';
 import 'package:qit/services/api.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -11,6 +13,15 @@ class SpotifyAuthPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        leading: IconButton(
+          onPressed: () {
+            Navigator.pushAndRemoveUntil(
+                context,
+                FadeRoute(child: const HomePage()),
+                (Route<dynamic> route) => false);
+          },
+          icon: const Icon(Icons.arrow_back_ios),
+        ),
         title: const Text(
           "LINK SPOTIFY ACCOUNT",
           style: TextStyle(
@@ -36,22 +47,14 @@ class _SpotifyAuthState extends State<SpotifyAuth>
   late Future<String> _futureURL;
   late AnimationController _controller;
   late Animation<Offset> _offsetAnimation;
+
+  final bool x = true;
   double _opacity = 0;
-
-  void _launchURL(String url) async {
-    final Uri uri = Uri.parse(url);
-    if (!await launchUrl(uri)) {
-      print("Could not launch the URL");
-    }
-  }
-
-  void _handleApiError(String? url) {
-    print("handle this");
-  }
 
   @override
   void initState() {
     super.initState();
+
     _futureURL = Api.getAuthURL();
 
     _controller = AnimationController(
@@ -118,7 +121,6 @@ class _SpotifyAuthState extends State<SpotifyAuth>
                     return const CircularProgressIndicator(); // Show loading indicator
                   } else if (snapshot.hasError) {
                     return SpotifyAuthButton(
-                      onPressed: _handleApiError,
                       url: null,
                       fontSize: fontSize,
                       error: true,
@@ -128,7 +130,6 @@ class _SpotifyAuthState extends State<SpotifyAuth>
                   } else {
                     String url = snapshot.data!; // Get the URL from the future
                     return SpotifyAuthButton(
-                      onPressed: _launchURL,
                       url: url,
                       fontSize: fontSize,
                       error: false,

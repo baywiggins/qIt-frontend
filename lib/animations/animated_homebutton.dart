@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:qit/animations/animated_homepage_route.dart';
+import 'package:qit/animations/animated_fade_route.dart';
 
 class AnimatedHomeButton extends StatefulWidget {
   final String buttonText;
@@ -53,7 +53,7 @@ class _AnimatedHomeButtonState extends State<AnimatedHomeButton>
       onTap: () {
         Navigator.push(
           context,
-          HomePageRoute(child: widget.nextPage),
+          FadeRoute(child: widget.nextPage),
         ).then((_) => _resetAnimationState());
       },
       onTapDown: _onTapDown,

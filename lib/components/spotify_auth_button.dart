@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:qit/pages/spotify_auth_webview_page.dart';
 
 class SpotifyAuthButton extends StatelessWidget {
-  final Function onPressed;
   final String? url;
   final double fontSize;
   final bool error;
 
   const SpotifyAuthButton(
       {super.key,
-      required this.onPressed,
       required this.url,
       required this.fontSize,
       required this.error});
@@ -32,7 +31,14 @@ class SpotifyAuthButton extends StatelessWidget {
             ),
           );
         }
-        onPressed(url); // Use the fetched URL
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => SpotifyAuthWebViewPage(
+              url: url!,
+            ),
+          ),
+        ); // Use the fetched URL
       },
       style: const ButtonStyle(
         shadowColor: WidgetStatePropertyAll(Colors.white),

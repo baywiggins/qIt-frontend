@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:qit/animations/animated_homepage_route.dart';
+import 'package:qit/animations/animated_fade_route.dart';
 import 'package:qit/components/login_button.dart';
 import 'package:qit/components/login_field.dart';
 import 'package:qit/components/swap_states_button.dart';
@@ -40,7 +40,7 @@ class _LoginPageState extends State<LoginPage> {
     bool x = await Api.postSignIn(username, password);
 
     if (x) {
-      Navigator.push(context, HomePageRoute(child: CreateRoomPage()));
+      Navigator.push(context, FadeRoute(child: CreateRoomPage()));
     }
   }
 
@@ -54,7 +54,7 @@ class _LoginPageState extends State<LoginPage> {
     bool x = await Api.postCreateAccount(username, password);
 
     if (x) {
-      Navigator.push(context, HomePageRoute(child: SpotifyAuthPage()));
+      Navigator.push(context, FadeRoute(child: SpotifyAuthPage()));
     }
   }
 
