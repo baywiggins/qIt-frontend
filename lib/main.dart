@@ -2,11 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:qit/pages/home_page.dart';
 import 'package:qit/services/secure_storage.dart';
+import 'package:uuid/uuid.dart';
 
 Future main() async {
   await dotenv.load(fileName: "assets/.env");
   SecureStorage.initialize();
-  SecureStorage.saveNewItem("is_authorized", "false");
+
+  await SecureStorage.saveNewItem("is_authorized", "false");
+  await SecureStorage.saveNewItem("user_id", const Uuid().v4());
 
   runApp(const MyApp());
 }

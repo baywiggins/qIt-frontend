@@ -3,10 +3,13 @@ import 'dart:convert';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 import 'package:qit/services/secure_storage.dart';
+import 'package:qit/services/spotify_controller.dart';
 import 'package:uuid/uuid.dart';
 
 class Api {
   static final String baseURL = dotenv.get("API_URL");
+
+  static final SpotifyController spotifyController = SpotifyController(baseURL);
 
   static Future<bool> checkAndUpdateAuthStatus() async {
     String? token = await SecureStorage.getItem("jwt_token");
@@ -41,7 +44,7 @@ class Api {
       SecureStorage.saveNewItem("is_authorized", "true");
     }
 
-    return status && await getSpotifyAuthStatus();
+    return status;
   }
 
   static Future<String> getAuthURL() async {
@@ -174,45 +177,5 @@ class Api {
       print("Error during account creation: $e");
       return false;
     }
-  }
-
-  static Future<void> pauseSpotify() async {
-    String? token = await SecureStorage.getItem("jwt_token");
-    String? state = await SecureStorage.getItem("state");
-    String? user = await SecureStorage.getItem("user_id");
-
-    if (token == null || state == null || user == null) {
-      return;
-    }
-
-    var headers = {
-      'Authorization': token,
-      'uuid': user,
-    };
-
-    await http.get(
-      Uri.parse("$baseURL/spotify/pause"),
-      headers: headers,
-    );
-  }
-
-  static Future<void> playSpotify() async {
-    String? token = await SecureStorage.getItem("jwt_token");
-    String? state = await SecureStorage.getItem("state");
-    String? user = await SecureStorage.getItem("user_id");
-
-    if (token == null || state == null || user == null) {
-      return;
-    }
-
-    var headers = {
-      'Authorization': token,
-      'uuid': user,
-    };
-
-    await http.get(
-      Uri.parse("$baseURL/spotify/play"),
-      headers: headers,
-    );
   }
 }

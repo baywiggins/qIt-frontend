@@ -6,7 +6,6 @@ import 'package:qit/components/swap_states_button.dart';
 import 'package:qit/pages/create_room_page.dart';
 import 'package:qit/pages/spotify_auth_page.dart';
 import 'package:qit/services/api.dart';
-import 'package:qit/services/secure_storage.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -17,13 +16,13 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> {
   bool signIn = true;
-  TextEditingController _usernameController = TextEditingController();
-  TextEditingController _passwordController = TextEditingController();
-  TextEditingController _confirmController = TextEditingController();
+  final TextEditingController _usernameController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _confirmController = TextEditingController();
 
-  FocusNode _usernameFocusNode = FocusNode();
-  FocusNode _passwordFocusNode = FocusNode();
-  FocusNode _confirmFocusNode = FocusNode();
+  final FocusNode _usernameFocusNode = FocusNode();
+  final FocusNode _passwordFocusNode = FocusNode();
+  final FocusNode _confirmFocusNode = FocusNode();
 
   void swapStates() {
     setState(() {
@@ -78,7 +77,9 @@ class _LoginPageState extends State<LoginPage> {
         FocusScope.of(context).requestFocus(FocusNode());
       },
       child: Scaffold(
-        appBar: AppBar(),
+        appBar: AppBar(
+          backgroundColor: const Color.fromARGB(255, 248, 248, 248),
+        ),
         backgroundColor: const Color.fromARGB(255, 248, 248, 248),
         body: SafeArea(
           child: Center(

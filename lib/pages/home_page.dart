@@ -2,10 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:qit/animations/animated_background.dart';
 import 'package:qit/animations/animated_homebutton.dart';
 import 'package:qit/pages/create_room_page.dart';
-import 'package:qit/pages/spotify_auth_page.dart';
 import 'package:qit/pages/join_room_page.dart';
 import 'package:qit/pages/login_page.dart';
-import 'package:qit/services/api.dart';
 import 'package:qit/services/secure_storage.dart';
 
 class HomePage extends StatelessWidget {

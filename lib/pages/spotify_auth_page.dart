@@ -4,7 +4,6 @@ import 'package:qit/animations/animated_fade_route.dart';
 import 'package:qit/components/spotify_auth_button.dart';
 import 'package:qit/pages/home_page.dart';
 import 'package:qit/services/api.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 class SpotifyAuthPage extends StatelessWidget {
   const SpotifyAuthPage({super.key});

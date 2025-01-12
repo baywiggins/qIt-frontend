@@ -60,8 +60,8 @@ class _SpotifyAuthWebViewPageState extends State<SpotifyAuthWebViewPage> {
         ),
       );
     } else {
-      Navigator.push(
-          context, MaterialPageRoute(builder: (context) => SpotifyAuthPage()));
+      Navigator.push(context,
+          MaterialPageRoute(builder: (context) => const SpotifyAuthPage()));
     }
   }
 
@@ -69,6 +69,7 @@ class _SpotifyAuthWebViewPageState extends State<SpotifyAuthWebViewPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: const Color.fromARGB(255, 248, 248, 248),
         title: const Text('Spotify Auth'),
         leading: IconButton(
           onPressed: _handleBackButton,
