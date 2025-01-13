@@ -13,15 +13,17 @@ class Api {
 
   static Future<bool> checkAndUpdateAuthStatus() async {
     String? token = await SecureStorage.getItem("jwt_token");
+    String? refreshToken = await SecureStorage.getItem("refresh_token");
     String? user = await SecureStorage.getItem("user_id");
     // ignore: unrelated_type_equality_checks
-    if (token == null || user == null) {
+    if (token == null || user == null || refreshToken == null) {
       SecureStorage.saveNewItem("is_authorized", "false");
       return false;
     }
 
     var headers = {
       'Authorization': token,
+      'refresh_token': refreshToken,
       'uuid': user,
     };
 
@@ -43,7 +45,7 @@ class Api {
     } else {
       SecureStorage.saveNewItem("is_authorized", "true");
     }
-
+    print(status);
     return status;
   }
 
@@ -121,6 +123,7 @@ class Api {
       // // Save the token and uuid in secure storage
       await SecureStorage.saveNewItem("jwt_token", data["token"]);
       await SecureStorage.saveNewItem("user_id", data["uuid"]);
+      await SecureStorage.saveNewItem("refresh_token", data["refresh_token"]);
 
       // // Call the function to check and update authentication status
       checkAndUpdateAuthStatus();
@@ -170,6 +173,7 @@ class Api {
       await SecureStorage.saveNewItem("jwt_token", data["token"]);
       await SecureStorage.saveNewItem("state", state);
       await SecureStorage.saveNewItem("user_id", data["uuid"]);
+      await SecureStorage.saveNewItem("refresh_token", data["refresh_token"]);
 
       return true;
     } catch (e) {
