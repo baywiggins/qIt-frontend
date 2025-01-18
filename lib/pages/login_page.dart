@@ -39,7 +39,7 @@ class _LoginPageState extends State<LoginPage> {
     bool x = await Api.postSignIn(username, password);
 
     if (x) {
-      Navigator.push(context, FadeRoute(child: CreateRoomPage()));
+      Navigator.push(context, FadeRoute(child: const CreateRoomPage()));
     }
   }
 
@@ -53,7 +53,7 @@ class _LoginPageState extends State<LoginPage> {
     bool x = await Api.postCreateAccount(username, password);
 
     if (x) {
-      Navigator.push(context, FadeRoute(child: SpotifyAuthPage()));
+      Navigator.push(context, FadeRoute(child: const SpotifyAuthPage()));
     }
   }
 

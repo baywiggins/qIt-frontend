@@ -40,7 +40,7 @@ class _JoinRoomPageState extends State<JoinRoomPage> {
                 onPressed: () {
                   _onPressed();
                 },
-                child: Text("123"),
+                child: const Text("join test room"),
               ),
             ],
           ),

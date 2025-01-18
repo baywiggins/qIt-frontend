@@ -2,14 +2,18 @@ import 'dart:convert';
 
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
+import 'package:qit/services/classes/token_validator.dart';
 import 'package:qit/services/secure_storage.dart';
-import 'package:qit/services/spotify_controller.dart';
+import 'package:qit/services/classes/spotify_controller.dart';
 import 'package:uuid/uuid.dart';
 
 class Api {
   static final String baseURL = dotenv.get("API_URL");
 
-  static final SpotifyController spotifyController = SpotifyController(baseURL);
+  static final TokenValidator tokenValidator = TokenValidator();
+
+  static final SpotifyController spotifyController =
+      SpotifyController(baseURL, tokenValidator);
 
   static Future<bool> checkAndUpdateAuthStatus() async {
     String? token = await SecureStorage.getItem("jwt_token");
@@ -124,6 +128,7 @@ class Api {
       await SecureStorage.saveNewItem("jwt_token", data["token"]);
       await SecureStorage.saveNewItem("user_id", data["uuid"]);
       await SecureStorage.saveNewItem("refresh_token", data["refresh_token"]);
+      await SecureStorage.saveNewItem("token_exp", data["token_exp"]);
 
       // // Call the function to check and update authentication status
       checkAndUpdateAuthStatus();
@@ -174,6 +179,7 @@ class Api {
       await SecureStorage.saveNewItem("state", state);
       await SecureStorage.saveNewItem("user_id", data["uuid"]);
       await SecureStorage.saveNewItem("refresh_token", data["refresh_token"]);
+      await SecureStorage.saveNewItem("token_exp", data["token_exp"]);
 
       return true;
     } catch (e) {

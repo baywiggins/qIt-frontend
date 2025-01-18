@@ -1,13 +1,16 @@
 import 'dart:convert';
 
+import 'package:qit/services/classes/token_expired_exception.dart';
+import 'package:qit/services/classes/token_validator.dart';
 import 'package:qit/services/secure_storage.dart';
 import 'package:http/http.dart' as http;
 
 class SpotifyController {
   final String baseURL;
+  final TokenValidator tokenValidator;
 
   // Constructor
-  SpotifyController(this.baseURL);
+  SpotifyController(this.baseURL, this.tokenValidator);
 
   Future<(String, String, String)> getInfoFromSecureStorage() async {
     try {
@@ -28,6 +31,12 @@ class SpotifyController {
   }
 
   Future<void> pause() async {
+    if (await tokenValidator.isTokenExpired()) {
+      // Attempt to refresh token
+      if (await tokenValidator.isRefreshTokenInvalid(baseURL)) {
+        throw TokenExpiredException();
+      }
+    }
     try {
       var (token, state, user) = await getInfoFromSecureStorage();
 
@@ -56,6 +65,9 @@ class SpotifyController {
   }
 
   Future<void> play() async {
+    if (await tokenValidator.isTokenExpired()) {
+      throw TokenExpiredException();
+    }
     try {
       var (token, state, user) = await getInfoFromSecureStorage();
 
@@ -84,6 +96,9 @@ class SpotifyController {
   }
 
   Future<bool> isPlaying() async {
+    if (await tokenValidator.isTokenExpired()) {
+      throw TokenExpiredException();
+    }
     try {
       var (token, state, user) = await getInfoFromSecureStorage();
 
