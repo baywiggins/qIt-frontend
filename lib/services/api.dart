@@ -124,7 +124,7 @@ class Api {
       // Parse the JSON response body
       Map<String, dynamic> data = jsonDecode(resp.body);
 
-      // // Save the token and uuid in secure storage
+      // Save the token and uuid in secure storage
       await SecureStorage.saveNewItem("jwt_token", data["token"]);
       await SecureStorage.saveNewItem("user_id", data["uuid"]);
       await SecureStorage.saveNewItem("refresh_token", data["refresh_token"]);

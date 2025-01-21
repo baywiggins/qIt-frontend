@@ -33,7 +33,10 @@ class SpotifyController {
   Future<void> pause() async {
     if (await tokenValidator.isTokenExpired()) {
       // Attempt to refresh token
+      print("now attempting to refresh the token!");
       if (await tokenValidator.isRefreshTokenInvalid(baseURL)) {
+        print(
+            "oh shiiii our refresh token is fucked, throwing big exception!!!!");
         throw TokenExpiredException();
       }
     }
@@ -58,6 +61,8 @@ class SpotifyController {
       if (response.statusCode != 200) {
         print("Failed to pause playback: ${response.statusCode}");
       }
+
+      print("ok, w, i think we paused???");
     } catch (e) {
       // Log or handle network or other errors
       print("Error during pause operation: $e");

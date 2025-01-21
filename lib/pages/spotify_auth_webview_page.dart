@@ -70,10 +70,12 @@ class _SpotifyAuthWebViewPageState extends State<SpotifyAuthWebViewPage> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: const Color.fromARGB(255, 248, 248, 248),
-        title: const Text('Spotify Auth'),
         leading: IconButton(
           onPressed: _handleBackButton,
-          icon: const Icon(Icons.arrow_back_ios),
+          icon: const Icon(
+            Icons.check,
+            size: 40,
+          ),
         ),
       ),
       body: WebViewWidget(controller: controller),

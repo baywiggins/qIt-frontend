@@ -31,7 +31,7 @@ class _CreateRoomPageState extends State<CreateRoomPage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            PlayPauseButton(),
+            // PlayPauseButton(),
           ],
         ),
       ),

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:qit/services/api.dart';
+import 'package:qit/services/classes/token_validator.dart';
 import 'package:qit/services/secure_storage.dart';
 
 class JoinRoomPage extends StatefulWidget {
@@ -13,7 +15,10 @@ class _JoinRoomPageState extends State<JoinRoomPage> {
 
   void _onPressed() async {
     var x = await SecureStorage.getItem("user_id");
-    print(_controller.text + x!);
+
+    await Api.spotifyController.pause();
+
+    print(x);
   }
 
   // Make sure to add a creation of a session ID when a user joins the room
