@@ -26,6 +26,17 @@ python3 tool/serve_web.py
 
 Choose **Host a room → Explore as demo host → Create room**. Open the room link in another tab to use the guest experience. The fake catalog has six tracks. No Spotify access or email service is needed in demo mode. Demo host login is memory-only; production uses Supabase's managed session persistence.
 
+## AWS dev and QA
+
+- [Dev](https://d3k99ndp3su1hx.cloudfront.net) provides the demo host and simulated Spotify for testing without a user account.
+- [QA](https://d3nxc8yzibtn7p.cloudfront.net) uses real Spotify authentication through Supabase. Hosting requires an approved development-mode Spotify tester; guests still join without accounts.
+
+Owner PRs targeting `main` deploy to the shared dev environment after checks. Merging to `main` deploys QA. Look for `qit/dev` on the PR commit and `qit/qa` on the merge commit, in addition to the Flutter web/Android and iOS checks. The unchanged backend is built from its `main` branch. Only the configured repository owner triggers AWS deployments; outside contributions run GitHub checks.
+
+Each environment exposes `/release.json` with the frontend and backend commit IDs currently served. A merge or a passing Flutter build alone does not establish that QA has finished deploying. Dev is shared across PRs, so another passing PR can replace its preview. Closing a PR leaves both environments running.
+
+Infrastructure, deployment recovery and live Spotify verification are documented in the [backend AWS runbook](https://github.com/baywiggins/qit-backend/blob/main/infra/README.md). Successful demo tests do not certify real Spotify queue or playback control.
+
 ## Real authentication
 
 Build with `SUPABASE_URL` and `SUPABASE_ANON_KEY` (a publishable key is supported). These are public client configuration, not the service-role key. Configure the backend against the same project's issuer/signing keys. The host taps **Continue with Spotify**, authorizes Spotify, and returns to `/auth/callback`. The backend exchanges the PKCE code, verifies the managed identity, encrypts Spotify tokens, and returns only the Supabase session. There is no separate email or connect step. Configure the Spotify-only Supabase provider and callback allowlist using the backend deployment guide. Guests never need a Supabase or Spotify account. Native host sessions and guest credentials use platform secure storage; web guest identity uses an HttpOnly room cookie.
