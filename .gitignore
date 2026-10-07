@@ -46,3 +46,10 @@ app.*.map.json
 
 # env
 *.env
+# Deployment credentials and signing material
+.env
+.env.*
+*.keystore
+*.jks
+android/key.properties
+client-config*.json

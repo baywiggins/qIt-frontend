@@ -1,0 +1,7 @@
+{
+  "API_URL": "https://qit.example.com/api/v1",
+  "PUBLIC_URL": "https://qit.example.com",
+  "SUPABASE_URL": "https://YOUR_PROJECT.supabase.co",
+  "SUPABASE_ANON_KEY": "YOUR_PUBLIC_SUPABASE_PUBLISHABLE_KEY",
+  "DEMO_MODE": false
+}
